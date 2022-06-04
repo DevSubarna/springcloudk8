@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: order
-          image: order:1.0
+          image: barna03/order-repo:1.0
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 8
