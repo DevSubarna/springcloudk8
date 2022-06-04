@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: account
-          image: account:1.0
+          image: barna03/account-repo:1.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
