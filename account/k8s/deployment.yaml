@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account
+  labels:
+    app: account
+spec:
+  selector:
+    matchLabels:
+      app: account
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: account
+    spec:
+      containers:
+        - name: account
+          image: account:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
