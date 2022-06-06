@@ -19,4 +19,73 @@ spec:
           image: barna03/order-repo:1.0
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8
+            - containerPort: 8080
+          env: # Setting Enviornmental Variables
+            - name: PRODUCT_URL
+              value: http://product-svc:8081/products/
+
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: order-app-config
+                  key: db_url
+
+            - name: DB_PORT
+              value: "3306"
+
+            - name: SERVER_PORT
+              value: "8082"
+
+            - name: DB_NAME  # Setting Database name from configMap
+              valueFrom:
+                configMapKeyRef:
+                  name: orderdb-config
+                  key: dbName
+
+            - name: DB_USERNAME  # Setting Database username from Secret
+              valueFrom:
+                secretKeyRef:
+                  name: orderdb-secrets
+                  key: username
+
+            - name: DB_PASSWORD # Setting Database password from Secret
+              valueFrom:
+                secretKeyRef:
+                  name: orderdb-secrets
+                  key: password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-svc
+spec:
+  type: NodePort
+  selector:
+    app: order
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  externalIPs:
+    - 1.2.4.121
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-app-config
+data:
+  db_url: order-db-service
+  topic-name: topic
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: order-app-secret
+type: Opaque
+stringData:
+  username: cm9vdA==
+  password: MTk4Ng==
