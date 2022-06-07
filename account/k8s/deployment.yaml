@@ -77,7 +77,7 @@ spec:
       port: 8080
       targetPort: 8080
   externalIPs:
-    - 192.168.1.103
+    - 192.168.1.104
 
 ---
 apiVersion: v1
